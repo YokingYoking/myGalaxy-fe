@@ -1,12 +1,12 @@
 <template>
-    <el-menu
-        default-active="home"
-        class="el-menu-vertical-demo"
-        @open="handleOpen"
-        @close="handleClose"
-        router
-      >
-        <el-sub-menu index="">
+  <el-menu
+    :default-active="defaultRoute"
+    class="el-menu-vertical-demo"
+    @open="handleOpen"
+    @close="handleClose"
+    router
+  >
+    <!-- <el-sub-menu index="">
           <template #title>
             <el-icon><location /></el-icon>
             <span>Navigator One</span>
@@ -26,29 +26,49 @@
         <el-menu-item index="2">
           <el-icon><icon-menu /></el-icon>
           <span>Navigator Two</span>
-        </el-menu-item>
-        <el-menu-item index="home">
-          <el-icon><document /></el-icon>
-          <span>Home</span>
-        </el-menu-item>
-        <el-menu-item index="4">
-          <el-icon><setting /></el-icon>
-          <span>Navigator Four</span>
-        </el-menu-item>
-      </el-menu>
-
+        </el-menu-item> -->
+    <el-menu-item index="/home">
+      <el-icon><House /></el-icon>
+      <span>Home</span>
+    </el-menu-item>
+    <el-menu-item index="/history">
+      <el-icon><Memo /></el-icon>
+      <span>History</span>
+    </el-menu-item>
+    <el-menu-item index="/dataset">
+      <el-icon><Document /></el-icon>
+      <span>Dataset</span>
+    </el-menu-item>
+    <el-menu-item index="/tool">
+      <el-icon><setting /></el-icon>
+      <span>Tools</span>
+    </el-menu-item>
+  </el-menu>
 </template>
 <script setup lang="ts">
 import {
   Document,
+  House,
   Menu as IconMenu,
-  Location,
   Setting,
-} from '@element-plus/icons-vue'
+  Memo
+} from "@element-plus/icons-vue";
+import { toRaw, ref, watch } from "vue";
+import { useRouter } from "vue-router";
+let router = useRouter();
+const defaultRoute = ref(toRaw(router).currentRoute.value.fullPath);
+watch(
+  () => router,
+  (newValue, oldValue) => {
+    console.log(newValue.currentRoute.value.fullPath);
+    defaultRoute.value = newValue.currentRoute.value.fullPath;
+  },
+  { immediate: true, deep: true }
+);
 const handleOpen = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath)
-}
+  console.log(key, keyPath);
+};
 const handleClose = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath)
-}
+  console.log(key, keyPath);
+};
 </script>
